@@ -45,6 +45,12 @@
       <artifactId>dsl4xml</artifactId>
       <version>0.1.2</version>
     </dependency>
+    <dependency>
+	  <groupId>com.thebuzzmedia</groupId>
+	  <artifactId>sjxp</artifactId>
+	  <version>2.2</version>
+	  <type>jar</type>
+	</dependency>
   
     <dependency>
       <groupId>com.google.android</groupId>
@@ -66,6 +72,13 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <repositories>
+    <repository>
+	  <id>The Buzz Media Maven Repository</id>
+	  <url>http://maven.thebuzzmedia.com</url>
+    </repository>
+  </repositories>
   
 </project>
 

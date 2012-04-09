@@ -21,7 +21,7 @@ public abstract class PerformanceTest {
 	
 	@Test
 	public void testMultithreadedParsing() throws Exception {
-		for (int i=1; i<=25; i++) {
+		for (int i=1; i<=50; i++) {
 			long _start = System.nanoTime();
 			testWithNThreads(i);
 			long _stop = System.nanoTime();
@@ -85,7 +85,15 @@ public abstract class PerformanceTest {
 				
 				for (int i=0; i<100; i++) {
 					InputStream _in = new ByteArrayInputStream(xml);
-					read(_in);
+					Tweets _tw = read(_in);
+					
+					// do some simple correctness tests...
+					
+					if (_tw.size() != 15)
+						throw new RuntimeException("Expected 15 tweets but read " + _tw.size());
+					
+					if (!"LowellSunSports (Lowell Sun Sports)".equals(_tw.get(14).getAuthor().getName()))
+						throw new RuntimeException("Expected correct name, but got " + _tw.get(14).getAuthor().getName());
 				}
 			} catch (Exception anExc) {
 				anExc.printStackTrace();
