@@ -11,6 +11,19 @@ import com.thebuzzmedia.sjxp.rule.IRule.Type;
 
 public class SJXPPerformanceTest extends PerformanceTest {
 
+	public SJXPPerformanceTest(int aMaxConcurrency, int anIterationsPerThread) {
+		super(aMaxConcurrency, anIterationsPerThread);
+	}
+	
+	public SJXPPerformanceTest() {
+		super();
+	}
+	
+	@Override
+	protected String getParserName() {
+		return "SJXP (pull-parsing)";
+	}
+
 	@Override
 	protected ReadingThread newReadingThread(CyclicBarrier aGate) {
 		return new ReadingThread(aGate) {

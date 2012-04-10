@@ -5,8 +5,6 @@ import static com.sjl.dsl4xml.DocumentReader.*;
 import java.io.*;
 import java.util.concurrent.*;
 
-import org.junit.*;
-
 import com.sjl.dsl4xml.*;
 import com.sjl.dsl4xml.performance.*;
 import com.sjl.dsl4xml.support.convert.*;
@@ -15,8 +13,20 @@ public class Dsl4XmlPerformanceTest extends PerformanceTest {
 
 	private DocumentReader<Tweets> tweetsReader;
 	
-	@Before
-	public void createReusableReader() throws IOException {
+	public Dsl4XmlPerformanceTest(int aMaxConcurrency, int anIterationsPerThread) {
+		super(aMaxConcurrency, anIterationsPerThread);
+	}
+	
+	public Dsl4XmlPerformanceTest() {
+		super();
+	}
+	
+	@Override
+	protected String getParserName() {
+		return "dsl4xml (pull-parsing)";
+	}
+
+	public void oneTimeParserSetup() throws IOException {
 		tweetsReader = mappingOf(Tweets.class).to(
 			tag("entry", Tweet.class).with(
 				tag("published"),

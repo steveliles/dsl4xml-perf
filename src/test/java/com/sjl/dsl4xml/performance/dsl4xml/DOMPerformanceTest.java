@@ -12,6 +12,19 @@ import com.sjl.dsl4xml.performance.*;
 
 public class DOMPerformanceTest extends PerformanceTest {
 
+	public DOMPerformanceTest(int aMaxConcurrency, int anIterationsPerThread) {
+		super(aMaxConcurrency, anIterationsPerThread);
+	}
+	
+	public DOMPerformanceTest() {
+		super();
+	}
+	
+	@Override
+	protected String getParserName() {
+		return "W3C DOM";
+	}
+
 	@Override
 	protected ReadingThread newReadingThread(CyclicBarrier aGate) 
 	throws Exception {

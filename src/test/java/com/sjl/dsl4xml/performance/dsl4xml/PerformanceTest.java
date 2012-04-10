@@ -10,28 +10,56 @@ import com.sjl.dsl4xml.performance.*;
 
 public abstract class PerformanceTest {
 
-	private static final int MAX_CONCURRENCY = 25;
-	private static final int ITERATIONS_PER_THREAD = 100;
-	
+	private int maxConcurrency;
+	private int iterationsPerThread;
 	private byte[] xml;
+
+	public PerformanceTest(int aMaxConcurrency, int anIterationsPerThread) {
+		maxConcurrency = aMaxConcurrency;
+		iterationsPerThread = anIterationsPerThread;
+	}
+	
+	public PerformanceTest() {
+		this(25, 100);
+	}
 	
 	protected abstract ReadingThread newReadingThread(CyclicBarrier aGate)
 	throws Exception;
 	
+	protected abstract String getParserName();
+	
 	@Before
-	public void oneTimeSetup() throws Exception {
-		xml = readInputIntoByteArray();
+	public void oneTimeParserSetup() throws Exception {
+		// may be overridden to perform one time setup of parser
+	}
+	
+	@Before
+	public void prepareXml() throws Exception {
+		xml = Streams.readInputIntoByteArray(Tweets.class.getResourceAsStream("twitter-atom.xml"));
 	}
 	
 	@Test
 	public void testMultithreadedParsing() throws Exception {
-		for (int i=1; i<=MAX_CONCURRENCY; i++) {
+		Statistics _stats = collectStatisticsForMultithreadedParsing();
+		System.out.println(_stats);
+	}
+	
+	public Statistics collectStatisticsForMultithreadedParsing() throws Exception {		
+		Statistics _stats = new Statistics(getParserName());
+		waitForGC();
+		for (int i=1; i<=maxConcurrency; i++) {
 			long _start = System.nanoTime();
 			testWithNThreads(i);
 			long _stop = System.nanoTime();
 			
-			System.out.println((_stop - _start) + "ns with " + i + " threads.");
+			_stats.add(i, _stop-_start, i * iterationsPerThread);
 		}
+		return _stats;
+	}
+	
+	private void waitForGC() {
+		System.gc();
+		try { Thread.sleep(200L); } catch (InterruptedException anExc){}
 	}
 	
 	private void testWithNThreads(int aNumberOfThreads) throws Exception {
@@ -51,30 +79,6 @@ public abstract class PerformanceTest {
 		}
 	}
 	
-	private byte[] readInputIntoByteArray() throws IOException {
-		ByteArrayOutputStream _out = new ByteArrayOutputStream();
-		InputStream _in = Tweets.class.getResourceAsStream("twitter-atom.xml");
-		try {
-			copy(_in, _out);
-		} finally {
-			if (_in != null)
-				_in.close();
-		}
-		
-		return _out.toByteArray();
-	}
-	
-	private void copy(InputStream anInput, OutputStream anOutput) 
-	throws IOException {
-		byte[] _buffer = new byte[256];
-		int _length;
-
-		while ((_length = anInput.read(_buffer)) > -1) {
-			anOutput.write(_buffer, 0, _length);
-		}
-		anOutput.flush();
-	}
-	
 	abstract class ReadingThread implements Runnable {
 		private CyclicBarrier gate;
 		
@@ -87,7 +91,7 @@ public abstract class PerformanceTest {
 			try {
 				gate.await();
 				
-				for (int i=0; i<ITERATIONS_PER_THREAD; i++) {
+				for (int i=0; i<iterationsPerThread; i++) {
 					InputStream _in = new ByteArrayInputStream(xml);
 					Tweets _tw = read(_in);
 					
