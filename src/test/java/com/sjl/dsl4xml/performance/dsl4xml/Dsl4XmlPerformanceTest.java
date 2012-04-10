@@ -25,7 +25,8 @@ public class Dsl4XmlPerformanceTest extends PerformanceTest {
 					attribute("type"),
 					pcdataMappedTo("value")
 				),
-				tag("twitter:lang").withPCDataMappedTo("language"),
+				tag("twitter", "lang").
+					withPCDataMappedTo("language"),
 				tag("author", Author.class).with(
 					tag("name"),
 					tag("uri")
