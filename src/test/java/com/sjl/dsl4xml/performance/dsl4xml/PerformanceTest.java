@@ -10,6 +10,9 @@ import com.sjl.dsl4xml.performance.*;
 
 public abstract class PerformanceTest {
 
+	private static final int MAX_CONCURRENCY = 25;
+	private static final int ITERATIONS_PER_THREAD = 100;
+	
 	private byte[] xml;
 	
 	protected abstract ReadingThread newReadingThread(CyclicBarrier aGate);
@@ -21,7 +24,7 @@ public abstract class PerformanceTest {
 	
 	@Test
 	public void testMultithreadedParsing() throws Exception {
-		for (int i=1; i<=50; i++) {
+		for (int i=1; i<=MAX_CONCURRENCY; i++) {
 			long _start = System.nanoTime();
 			testWithNThreads(i);
 			long _stop = System.nanoTime();
@@ -83,7 +86,7 @@ public abstract class PerformanceTest {
 			try {
 				gate.await();
 				
-				for (int i=0; i<100; i++) {
+				for (int i=0; i<ITERATIONS_PER_THREAD; i++) {
 					InputStream _in = new ByteArrayInputStream(xml);
 					Tweets _tw = read(_in);
 					
