@@ -15,7 +15,10 @@
         ]);
 
         var options = {
-          title: 'Parsing Throughput (higher is better)'
+          title: 'Parsing Throughput (higher is better)',
+          curveType: 'function',
+          hAxis: { title: 'Concurrency (threads)' },
+          vAxis: { title: 'Throughput (documents)' }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

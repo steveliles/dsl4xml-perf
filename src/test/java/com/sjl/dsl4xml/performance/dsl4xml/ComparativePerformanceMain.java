@@ -7,8 +7,8 @@ import com.sjl.dsl4xml.performance.dsl4xml.Statistics.Entry;
 public class ComparativePerformanceMain {
 
 	public static void main(String... anArgs) throws Exception {
-		int _concurrency = 25;
-		int _iterations = 100;
+		int _concurrency = 4;
+		int _iterations = 1000;
 		
 		ComparativeStatistics _stats = new ComparativeStatistics(
 			collectStats(new DOMPerformanceTest(_concurrency, _iterations)),
