@@ -7,19 +7,14 @@ import com.sjl.dsl4xml.performance.dsl4xml.Statistics.Entry;
 public class ComparativePerformanceMain {
 
 	public static void main(String... anArgs) throws Exception {
-		int _concurrency = 20;
-		int _iterations = 50;
+		int _concurrency = 25;
+		int _iterations = 100;
 		
 		ComparativeStatistics _stats = new ComparativeStatistics(
+			collectStats(new DOMPerformanceTest(_concurrency, _iterations)),
 			collectStats(new Dsl4XmlPerformanceTest(_concurrency, _iterations)),
 			collectStats(new SJXPPerformanceTest(_concurrency, _iterations)),
-			collectStats(new DOMPerformanceTest(_concurrency, _iterations))
-		);
-		
-		_stats = new ComparativeStatistics(
-			collectStats(new Dsl4XmlPerformanceTest(_concurrency, _iterations)),
-			collectStats(new SJXPPerformanceTest(_concurrency, _iterations)),
-			collectStats(new DOMPerformanceTest(_concurrency, _iterations))
+			collectStats(new SAXParserPerformanceTest(_concurrency, _iterations))
 		);
 
 		String _chartHtml = _stats.createChartHtml();
@@ -31,6 +26,8 @@ public class ComparativePerformanceMain {
 	}
 	
 	private static Statistics collectStats(PerformanceTest aTest) throws Exception {
+		System.out.println(aTest.getParserName());
+		
 		aTest.prepareXml();
 		aTest.oneTimeParserSetup();
 		
