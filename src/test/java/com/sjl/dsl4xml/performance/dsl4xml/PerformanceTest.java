@@ -15,7 +15,8 @@ public abstract class PerformanceTest {
 	
 	private byte[] xml;
 	
-	protected abstract ReadingThread newReadingThread(CyclicBarrier aGate);
+	protected abstract ReadingThread newReadingThread(CyclicBarrier aGate)
+	throws Exception;
 	
 	@Before
 	public void oneTimeSetup() throws Exception {
