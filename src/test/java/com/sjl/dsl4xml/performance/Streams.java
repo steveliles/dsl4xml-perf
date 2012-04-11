@@ -1,4 +1,4 @@
-package com.sjl.dsl4xml.performance.dsl4xml;
+package com.sjl.dsl4xml.performance;
 
 import java.io.*;
 import java.nio.charset.*;

@@ -1,12 +1,10 @@
-package com.sjl.dsl4xml.performance.dsl4xml;
+package com.sjl.dsl4xml.performance;
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
 import org.junit.*;
-
-import com.sjl.dsl4xml.performance.*;
 
 public abstract class PerformanceTest {
 
@@ -79,7 +77,7 @@ public abstract class PerformanceTest {
 		}
 	}
 	
-	abstract class ReadingThread implements Runnable {
+	public abstract class ReadingThread implements Runnable {
 		private CyclicBarrier gate;
 		
 		public ReadingThread(CyclicBarrier aGate) {
