@@ -18,7 +18,7 @@ public abstract class PerformanceTest {
 	}
 	
 	public PerformanceTest() {
-		this(25, 100);
+		this(8, 1000);
 	}
 	
 	protected abstract ReadingThread newReadingThread(CyclicBarrier aGate)

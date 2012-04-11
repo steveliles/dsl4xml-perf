@@ -13,6 +13,7 @@ public class ComparativePerformanceMain {
 		
 		ComparativeStatistics _stats = new ComparativeStatistics(
 			collectStats(new DOMPerformanceTest(_concurrency, _iterations)),
+			collectStats(new DOMXPathPerformanceTest(_concurrency, _iterations)),
 			collectStats(new PullParserPerformanceTest(_concurrency, _iterations)),
 			collectStats(new Dsl4XmlPerformanceTest(_concurrency, _iterations)),
 			collectStats(new SJXPPerformanceTest(_concurrency, _iterations)),
