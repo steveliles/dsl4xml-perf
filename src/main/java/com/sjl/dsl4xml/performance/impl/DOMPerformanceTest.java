@@ -48,11 +48,15 @@ public class DOMPerformanceTest extends PerformanceTest {
 			
 			private void unmarshall(Document aDoc, Tweets aTo) 
 			throws Exception {
-				NodeList _entries = aDoc.getElementsByTagName("entry");
-				for (int i=0; i<_entries.getLength(); i++) {
-					Tweet _tweet = new Tweet();
-					aTo.addTweet(_tweet);
-					unmarshallEntry((Element)_entries.item(i), _tweet);
+				NodeList _nodes = aDoc.getChildNodes().item(0).getChildNodes();
+				for (int i=0; i<_nodes.getLength(); i++) {
+				    Node _n = _nodes.item(i);
+				    if ((_n.getNodeType() == Node.ELEMENT_NODE) && ("entry".equals(_n.getNodeName())))
+				    {
+    					Tweet _tweet = new Tweet();
+    					aTo.addTweet(_tweet);
+    					unmarshallEntry((Element)_n, _tweet);
+				    }
 				}
 			}
 			
