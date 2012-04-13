@@ -1,4 +1,4 @@
-package com.sjl.dsl4xml.performance;
+package com.sjl.dsl4xml.performance.model;
 
 public class Author {
 	private String name;

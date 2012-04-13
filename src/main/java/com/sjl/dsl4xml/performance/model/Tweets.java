@@ -1,4 +1,4 @@
-package com.sjl.dsl4xml.performance;
+package com.sjl.dsl4xml.performance.model;
 
 import java.util.*;
 

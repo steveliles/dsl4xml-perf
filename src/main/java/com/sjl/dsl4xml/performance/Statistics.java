@@ -32,7 +32,7 @@ public class Statistics implements Iterable<Statistics.Entry> {
 		}
 		
 		public String toString() {
-			return getElapsedNanos() + "ns with " + threads + " threads";
+			return getThroughputPerSecond() + " docs/sec with " + threads + " threads";
 		}
 	}
 	
@@ -63,6 +63,22 @@ public class Statistics implements Iterable<Statistics.Entry> {
 	
 	public int size() {
 		return entries.size();
+	}
+	
+	public Statistics combine(Statistics aStatistics) {
+		if (!name.equals(aStatistics.name))
+			throw new IllegalArgumentException("can't add " + aStatistics.name + " to " + name);
+		if (entries.size() != aStatistics.size())
+			throw new IllegalArgumentException("mismatched stats - I have " + size() + " but other has " + aStatistics.size());
+		
+		Statistics _result = new Statistics(name);
+		for (int i=0; i<size(); i++) {
+			Entry _mine = entries.get(i);
+			Entry _other = aStatistics.entries.get(i);
+			
+			_result.add(_mine.threads, _mine.time + _other.time, _mine.docs + _other.docs);
+		}
+		return _result;
 	}
 	
 	public String toString() {

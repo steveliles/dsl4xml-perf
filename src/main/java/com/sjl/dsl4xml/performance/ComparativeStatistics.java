@@ -6,9 +6,19 @@ public class ComparativeStatistics implements Iterable<Statistics> {
 
 	private List<Statistics> stats;
 	
-	public ComparativeStatistics(Statistics... aStats) {
+	public ComparativeStatistics(List<Statistics> aStats) {
+		Map<String, Statistics> _statsByParser = new LinkedHashMap<String, Statistics>();
+		for (Statistics _s : aStats) {		
+			Statistics _statistics = _statsByParser.get(_s.getName());
+			if (_statistics == null) {
+				_statsByParser.put(_s.getName(), _s);
+			} else {
+				_statsByParser.put(_s.getName(), _statistics.combine(_s));
+			}
+		}
+		
 		stats = new ArrayList<Statistics>();
-		for (Statistics _s : aStats) {
+		for (Statistics _s : _statsByParser.values()) {
 			stats.add(_s);
 		}
 	}
@@ -34,9 +44,12 @@ public class ComparativeStatistics implements Iterable<Statistics> {
 	private List<Object> getRowValues(int aRowIndex) {
 		List<Object> _result = new ArrayList<Object>();
 		
-		_result.add(stats.get(0).getEntry(aRowIndex).getThreads()); // TODO: sorry demeter
-		
+		boolean _first = true;
 		for (Statistics _s : stats) {
+			if (_first) {
+				_result.add(_s.getEntry(aRowIndex).getThreads());
+				_first = false;
+			}
 			Statistics.Entry _e = _s.getEntry(aRowIndex);
 			_result.add(_e.getThroughputPerSecond());
 		}
