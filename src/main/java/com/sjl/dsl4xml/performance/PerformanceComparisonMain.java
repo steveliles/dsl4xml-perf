@@ -11,7 +11,7 @@ public class PerformanceComparisonMain {
 
 	public static void main(String... anArgs) throws Exception {
 		PerformanceComparisonMain _cp = new PerformanceComparisonMain();
-		_cp.comparePerformance(4, 10, new File(anArgs[0]));
+		_cp.comparePerformance(8, 500, new File(anArgs[0]));
 	}
 
 	public void comparePerformance(int aConcurrency, int anIterations, File aResultsFile) 

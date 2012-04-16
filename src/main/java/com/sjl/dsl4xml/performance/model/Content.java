@@ -1,7 +1,13 @@
 package com.sjl.dsl4xml.performance.model;
 
+import org.simpleframework.xml.*;
+
 public class Content {
+	
+	@Attribute
 	public String type;
+	
+	@Text
 	public String value;
 	
 	public String getType() {

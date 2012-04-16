@@ -1,7 +1,13 @@
 package com.sjl.dsl4xml.performance.model;
 
+import org.simpleframework.xml.*;
+
 public class Author {
+	
+	@Element
 	private String name;
+	
+	@Element
 	private String uri;
 	
 	public Author() {}

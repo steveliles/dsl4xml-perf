@@ -2,11 +2,23 @@ package com.sjl.dsl4xml.performance.model;
 
 import java.util.*;
 
+import org.simpleframework.xml.*;
+
 public class Tweet {
-	public String title;
-	public Date published;
-	public Content content;
+	
+	@Element 
+	private String title;
+	
+	@Element
+	private Date published;
+	
+	@Element
+	private Content content;
+	
+	@Element(name="twitter:lang")
 	private String language;
+	
+	@Element
 	private Author author;
 	
 	public String getTitle() {

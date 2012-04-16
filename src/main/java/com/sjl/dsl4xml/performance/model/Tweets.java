@@ -2,7 +2,12 @@ package com.sjl.dsl4xml.performance.model;
 
 import java.util.*;
 
+import org.simpleframework.xml.*;
+
+@Root(name="feed", strict=false)
 public class Tweets implements Iterable<Tweet> {
+	
+	@ElementList(type=Tweet.class, name="entry", inline=true)
 	private List<Tweet> tweets;
 	
 	public Tweets() {
