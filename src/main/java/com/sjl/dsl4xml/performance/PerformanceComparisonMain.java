@@ -11,7 +11,7 @@ public class PerformanceComparisonMain {
 
 	public static void main(String... anArgs) throws Exception {
 		PerformanceComparisonMain _cp = new PerformanceComparisonMain();
-		_cp.comparePerformance(8, 500, new File(anArgs[0]));
+		_cp.comparePerformance(4, 50, new File(anArgs[0]));
 	}
 
 	public void comparePerformance(int aConcurrency, int anIterations, File aResultsFile) 
@@ -19,8 +19,13 @@ public class PerformanceComparisonMain {
 		byte[] _xml = Streams.readInputIntoByteArray(Tweets.class.getResourceAsStream("twitter-atom.xml"));
 		
 		List<PerformanceTestRunner> _runners = Arrays.asList(
-			newDOMRunner(), newSAXRunner(), newPullParserRunner(),
-			newDsl4XmlRunner(), newSJXPRunner()
+			newDOMRunner(),	
+		    newSAXRunner(),
+		    newPullParserRunner(),
+			newDsl4XmlPullRunner(),
+			newDsl4XmlSAXRunner(),
+			newSJXPRunner(),
+			newSimpleXMLRunner()
 		);
 		
 		// warm up and discard the first results
@@ -106,17 +111,33 @@ public class PerformanceComparisonMain {
 		);
 	}
 	
-	private PerformanceTestRunner newDsl4XmlRunner() {
+	private PerformanceTestRunner newDsl4XmlPullRunner() {
 		return new PerformanceTestRunner(
 			new TweetsReaderFactory() {
 				@Override
 				public String getParserType() {
-					return "dsl4xml";
+					return "dsl4xml (pull)";
 				}
 
 				@Override
 				public TweetsReader newReader() throws Exception {
-					return new Dsl4XmlTweetsReader();
+					return new Dsl4XmlPullTweetsReader();
+				}
+			}
+		);
+	}
+	
+	private PerformanceTestRunner newDsl4XmlSAXRunner() {
+		return new PerformanceTestRunner(
+			new TweetsReaderFactory() {
+				@Override
+				public String getParserType() {
+					return "dsl4xml (SAX)";
+				}
+
+				@Override
+				public TweetsReader newReader() throws Exception {
+					return new Dsl4XmlSAXTweetsReader();
 				}
 			}
 		);
@@ -133,6 +154,22 @@ public class PerformanceComparisonMain {
 				@Override
 				public TweetsReader newReader() throws Exception {
 					return new SJXPTweetsReader();
+				}
+			}
+		);
+	}
+	
+	private PerformanceTestRunner newSimpleXMLRunner() {
+		return new PerformanceTestRunner(
+			new TweetsReaderFactory() {
+				@Override
+				public String getParserType() {
+					return "SimpleXML";
+				}
+
+				@Override
+				public TweetsReader newReader() throws Exception {
+					return new SimpleXMLTweetsReader();
 				}
 			}
 		);

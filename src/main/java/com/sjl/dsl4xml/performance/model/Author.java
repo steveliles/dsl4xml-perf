@@ -27,4 +27,15 @@ public class Author {
 	public void setUri(String aUri) {
 		uri = aUri;
 	}
+	
+	public boolean equals(Object anObject) {
+		if (anObject instanceof Author) {
+			Author _other = (Author) anObject;
+			return ( 
+				((name != null) ? name.equals(_other.name) : (_other.name == null)) &&
+				((uri != null) ? uri.equals(_other.uri) : (_other.uri == null))
+			);
+		}
+		return false;
+	}
 }

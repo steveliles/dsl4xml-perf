@@ -64,7 +64,7 @@ public class DOMTweetsReader implements TweetsReader {
 					Content _content = new Content();
 					aTo.setContent(_content);
 					unmarshallContent((Element)_n, _content);
-				} else if ("lang".equals(_n.getNodeName())) {
+				} else if ("twitter:lang".equals(_n.getNodeName())) {
 					aTo.setLanguage(getPCData(_n));
 				} else if ("author".equals(_n.getNodeName())) {
 					Author _author = new Author();
@@ -77,7 +77,7 @@ public class DOMTweetsReader implements TweetsReader {
 	
 	private void unmarshallContent(Element aContentEl, Content aTo) {
 		aTo.setType(aContentEl.getAttribute("type"));
-		aTo.setValue(aContentEl.getNodeValue());
+		aTo.setValue(getPCData(aContentEl));
 	}
 	
 	private void unmarshallAuthor(Element anAuthorEl, Author aTo) {

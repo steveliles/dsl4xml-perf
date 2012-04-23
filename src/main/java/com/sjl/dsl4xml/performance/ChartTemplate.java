@@ -25,7 +25,13 @@ public class ChartTemplate {
 	}
 
 	public void addRow(List<Object> aRowValues) {
-		data.append("\r\n").append(aRowValues.toString()).append(",");
+		data.append("\r\n");
+		data.append("['").append(aRowValues.get(0)).append("',");
+		for (int i=1; i<aRowValues.size(); i++) {
+			data.append(aRowValues.get(i)).append(",");
+		}
+		data.setLength(data.length()-1);
+		data.append("],");
 	}
 
 	public String toHtmlString() {

@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.simpleframework.xml.*;
 
+@Root(name="entry", strict=false)
 public class Tweet {
 	
 	@Element 
@@ -15,7 +16,7 @@ public class Tweet {
 	@Element
 	private Content content;
 	
-	@Element(name="twitter:lang")
+	@Element(name="lang")
 	private String language;
 	
 	@Element

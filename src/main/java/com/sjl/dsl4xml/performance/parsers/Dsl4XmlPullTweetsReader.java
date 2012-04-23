@@ -9,11 +9,11 @@ import com.sjl.dsl4xml.performance.*;
 import com.sjl.dsl4xml.performance.model.*;
 import com.sjl.dsl4xml.support.convert.*;
 
-public class Dsl4XmlTweetsReader implements TweetsReader {
+public class Dsl4XmlPullTweetsReader implements TweetsReader {
 
 	private DocumentReader<Tweets> reader;
 	
-	public Dsl4XmlTweetsReader() {
+	public Dsl4XmlPullTweetsReader() {
 		reader = mappingOf(Tweets.class).to(
 			tag("entry", Tweet.class).with(
 				tag("published"),

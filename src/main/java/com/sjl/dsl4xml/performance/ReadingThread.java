@@ -32,6 +32,7 @@ public class ReadingThread implements Runnable {
 				Tweets _tw = reader.read(_in);
 				if (_tw.size() != 15)
 					throw new RuntimeException("Expected 15 tweets but read " + _tw.size());
+				
 			}
 		} catch (Exception anExc) {
 			anExc.printStackTrace();

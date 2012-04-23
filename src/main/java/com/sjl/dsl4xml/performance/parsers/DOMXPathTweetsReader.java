@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 
+import javax.xml.namespace.*;
 import javax.xml.parsers.*;
 import javax.xml.xpath.*;
 
@@ -30,19 +31,52 @@ public class DOMXPathTweetsReader implements TweetsReader {
 	
 	public DOMXPathTweetsReader() 
 	throws Exception {
-		builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		DocumentBuilderFactory _dbf = DocumentBuilderFactory.newInstance();
+		_dbf.setNamespaceAware(true);
+		builder = _dbf.newDocumentBuilder();
 		factory = XPathFactory.newInstance();
 		
-		entry = factory.newXPath().compile("/feed/entry");
-		published = factory.newXPath().compile(".//published");
-		title = factory.newXPath().compile(".//title");
-		contentType = factory.newXPath().compile(".//content/@type");
-		content = factory.newXPath().compile(".//content");
-		lang = factory.newXPath().compile(".//twitter:lang");
-		authorName = factory.newXPath().compile(".//author/name");
-		authorUri = factory.newXPath().compile(".//author/uri");
+		NamespaceContext _ctx = new NamespaceContext() {
+            public String getNamespaceURI(String aPrefix) {
+                String _uri;
+                if (aPrefix.equals("atom"))
+                    _uri = "http://www.w3.org/2005/Atom";
+                else if (aPrefix.equals("twitter"))
+                    _uri = "http://api.twitter.com/";
+                else
+                    _uri = null;
+                return _uri;
+            }
+
+			@Override
+			public String getPrefix(String aArg0) {
+				return null;
+			}
+
+			@Override
+			@SuppressWarnings("rawtypes")
+			public Iterator getPrefixes(String aArg0) {
+				return null;
+			}
+        };
+		
+        entry = newXPath(factory, _ctx, "/atom:feed/atom:entry");
+		published = newXPath(factory, _ctx, ".//atom:published");
+		title = newXPath(factory, _ctx, ".//atom:title");
+		contentType = newXPath(factory, _ctx, ".//atom:content/@type");
+		content = newXPath(factory, _ctx, ".//atom:content");
+		lang = newXPath(factory, _ctx, ".//twitter:lang");
+		authorName = newXPath(factory, _ctx, ".//atom:author/atom:name");
+		authorUri = newXPath(factory, _ctx, ".//atom:author/atom:uri");
 		
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+	}
+	
+	private XPathExpression newXPath(XPathFactory aFactory, NamespaceContext aCtx, String anXPath) 
+	throws Exception {
+		XPath _xp = factory.newXPath();
+        _xp.setNamespaceContext(aCtx);
+        return _xp.compile(anXPath);
 	}
 	
 	@Override
